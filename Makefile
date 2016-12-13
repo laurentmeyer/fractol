@@ -13,6 +13,7 @@ SRCFILES =	main.c					\
 			complex.c				\
 			julia.c					\
 			newton.c				\
+			fdf.c					\
 			utils.c
 
 LIBS =		ft						\

@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 11:53:38 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 16:43:19 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/13 19:46:49 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #define O_KEY 0x1f
 #define D_KEY 0x2
 #define M_KEY 0x2e
+#define E_KEY 0xe
 #define PAGEUP_KEY 0x74
 #define PAGEDOWN_KEY 0x79
 #define MOUSEWHEEL_UP 5
@@ -33,47 +34,35 @@
 
 #include <stdio.h>
 
-static void				zoom(t_win *win, double ratio, double centerx, double centery)
-{
-
-	//printf("mouse x = %d, mouse_y = %d\n", win->mouse_x, win->mouse_y);
-	//printf("SAVE mouse x = %d, mouse_y = %d\n", win->mouse_x_save, win->mouse_y_save);
-	//printf("ratio = %g\nWMIN = %g, WMAX = %g, centerx = %g\nHMIN = %g, HMAX = %g centery = %g\n", ratio, win->win_wmin, win->win_wmax, centerx, win->win_hmin, win->win_hmax, centery);
-	win->win_wmin += (centerx - win->win_wmin) * (1 - ratio);
-	win->win_wmax -= (win->win_wmax - centerx) * (1 - ratio);
-	win->win_hmin += (centery - win->win_hmin) * (1 - ratio);
-	win->win_hmax -= (win->win_hmax - centery) * (1 - ratio);
-	//printf("mouse real = %g imaginary = %g\n", x_to_real(win, win->mouse_x), y_to_imaginary(win, win->mouse_y));
-	//win->win_wmax = centerx + (win->win_wmax - centerx) * ratio;
-	//win->win_hmin = centery - (centery - win->win_hmin) * ratio;
-	//win->win_hmax = centery + (win->win_hmax - centery) * ratio;
-	//printf("WMIN = %g, WMAX = %g, HMIN = %g, HMAX = %g\n", win->win_wmin, win->win_wmax, win->win_hmin, win->win_hmax);
-	//printf("=========================\n");
-}
-
 static int				key_hooks(int keycode, t_win *win)
 {
 	printf("keycode : 0x%x\n", keycode);
+	if (keycode == E_KEY)
+		export_fdf(win);
 	if (keycode == M_KEY)
 	{
 		win->mouse_on = !win->mouse_on;
 		win->posx_save = x_to_real(win, win->mouse_x);
 		win->posy_save = y_to_imaginary(win, win->mouse_y);
 	}
-	if(keycode == PAGEUP_KEY || keycode == PAGEDOWN_KEY)
+	if (keycode == PAGEUP_KEY || keycode == PAGEDOWN_KEY)
 	{
 		zoom(win, keycode == PAGEDOWN_KEY ? 1.1 : 0.9,
 				x_to_real(win, win->mouse_x),
 				y_to_imaginary(win, win->mouse_y));
+	}
+	if (keycode == UP_KEY || keycode == DOWN_KEY)
+		move_win(win, keycode == UP_KEY ? 1 : -1, 0);
+	if (keycode == LEFT_KEY || keycode == RIGHT_KEY)
+		move_win(win, 0, keycode == LEFT_KEY ? 1 : -1);
+	if (win && keycode == ESC_KEY)
+		exit(0);
 	if (win == ((t_data *)(win->data))->julia)
 		julia_update_all(win, win->posx_save, win->posy_save);
 	if (win == ((t_data *)(win->data))->mandel)
 		mandel_update_all(win);
-//	if (win == ((t_data *)(win->data))->newton)
-//		newton_update_all(win);
-	}
-	if (win && keycode == ESC_KEY)
-		exit(0);
+	if (win == ((t_data *)(win->data))->newton)
+		newton_update_all(win);
 	return (1);
 }
 

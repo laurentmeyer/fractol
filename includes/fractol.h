@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 11:53:48 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 16:43:57 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/13 19:40:22 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ void				mandel_update_all(t_win *win);
 void				newton_update_all(t_win *win);
 int					all_hooks(t_data *data);
 int					display_image(t_data *data);
+void				zoom(t_win *win, double ratio, double centerx, double centery);
+void				move_win(t_win *win, int up, int left);
+void				export_fdf(t_win *win);
 
 
 
