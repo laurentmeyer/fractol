@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 13:32:41 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 14:09:21 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/13 15:02:20 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ int		main(int ac, char **av)
 		return (0);
 	}
 	if ((data = init_data(masks)))
-	{
-		printf("youhou\n");
 		display_image(data);
-	}
+	else
+		ft_putstr("error\n");
 	return (0);
 }

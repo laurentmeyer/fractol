@@ -1,7 +1,7 @@
 CC = 		gcc
 CFLAGS =	-Wall -Wextra -Werror
 BINARY =	fractol
-BUILDDIR =	builds
+BUILDDIR =	srcs
 SOURCEDIR =	srcs
 HEADERDIR = includes
 
@@ -11,7 +11,9 @@ SRCFILES =	main.c					\
 			display.c				\
 			print.c					\
 			complex.c				\
-			julia.c
+			julia.c					\
+			newton.c				\
+			utils.c
 
 LIBS =		ft						\
 			mlx
