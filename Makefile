@@ -11,8 +11,7 @@ SRCFILES =	main.c					\
 			display.c				\
 			print.c					\
 			complex.c				\
-			julia.c					\
-			mandelbrot.c
+			julia.c
 
 LIBS =		ft						\
 			mlx

@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 15:54:18 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/08 18:20:44 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/12 13:43:53 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@ t_fcomplex		*fcomplex_new(double real, double imaginary)
 	new[0] = real;
 	new[1] = imaginary;
 	return ((t_fcomplex *)new);
-}
-
-double			fcomplex_modulus(t_fcomplex *c)
-{
-	return (sqrt((*c)[0] * (*c)[0] + (*c)[1] * (*c)[1]));
 }
 
 void			fcomplex_multiply_to(t_fcomplex *at, t_fcomplex *c)
@@ -80,4 +75,16 @@ void			fcomplex_add_to_f(t_fcomplex *at, double r, double i)
 	tmpi0 = (*at)[1];
 	(*at)[0] = tmpr0 + r;
 	(*at)[1] = tmpi0 + i;
+}
+
+void			fcomplex_divide_to(t_fcomplex *at, t_fcomplex *c)
+{
+	fcomplex_divide_to_f(at, (*c)[0], (*c)[1]);
+}
+
+void			fcomplex_divide_to_f(t_fcomplex *at, double r, double i)
+{
+	fcomplex_multiply_to_f(at, r, -i);
+	(*at)[0] /= r * r + i * i;
+	(*at)[1] /= r * r + i * i;
 }
