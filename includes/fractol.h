@@ -6,19 +6,17 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 11:53:48 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 19:40:22 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/14 16:49:23 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
-
 # include "mlx.h"
 # include "libft.h"
 # include "mycomplex.h"
 # define WIN_W 500
 # define WIN_H 500
-# define WIN_T "FractLOL"
 # define JULIA_MASK (1L << 0)
 # define MANDEL_MASK (1L << 1)
 # define NEWTON_MASK (1L << 2)
@@ -36,6 +34,7 @@ typedef struct		s_win
 	int				mouse_on;
 	int				mouse_x;
 	int				mouse_y;
+	int				destroyed;
 	double			posx_save;
 	double			posy_save;
 	double			win_hmin;
@@ -61,14 +60,10 @@ void				mandel_update_all(t_win *win);
 void				newton_update_all(t_win *win);
 int					all_hooks(t_data *data);
 int					display_image(t_data *data);
-void				zoom(t_win *win, double ratio, double centerx, double centery);
+void				update_window(t_win *win);
+void				zoom(t_win *win, double ratio,
+							double centerx, double centery);
 void				move_win(t_win *win, int up, int left);
 void				export_fdf(t_win *win);
 
-
-
-
-void	print_complex(t_fcomplex *c);
-void	print_complex_array(t_fcomplex ***array);
-void				print_data_details(t_data *data);
 #endif

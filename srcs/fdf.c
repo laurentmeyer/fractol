@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 19:26:40 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 19:47:10 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/14 16:50:33 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void		itoa_to(char buffer[5], unsigned int u, int i)
 	ft_memset(buffer, ' ', 4);
 	p = 4;
 	buffer[p--] = '\0';
-	buffer[p--] = (i + 1) % WIN_W == 0 ? '\n' : ' ';	
+	buffer[p--] = (i + 1) % WIN_W == 0 ? '\n' : ' ';
 	buffer[p--] = u % 10 + '0';
 	u /= 10;
 	while (u)
@@ -39,7 +39,7 @@ void			export_fdf(t_win *win)
 	char	buffer[WIN_H * WIN_W * 4 + 1];
 	char	itoa_buff[12];
 	int		i;
-	
+
 	unlink(FILENAME);
 	if (win && (fd = open(FILENAME, O_WRONLY | O_CREAT,
 					S_IRWXU | S_IRWXG | S_IRWXO)) == -1)

@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 11:53:38 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 19:46:49 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/14 16:53:19 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@
 #define MOUSEWHEEL_UP 5
 #define MOUSEWHEEL_DOWN 4
 
-#include <stdio.h>
-
-static int				key_hooks(int keycode, t_win *win)
+static int	key_hooks(int keycode, t_win *win)
 {
-	printf("keycode : 0x%x\n", keycode);
 	if (keycode == E_KEY)
 		export_fdf(win);
 	if (keycode == M_KEY)
@@ -57,80 +54,52 @@ static int				key_hooks(int keycode, t_win *win)
 		move_win(win, 0, keycode == LEFT_KEY ? 1 : -1);
 	if (win && keycode == ESC_KEY)
 		exit(0);
-	if (win == ((t_data *)(win->data))->julia)
-		julia_update_all(win, win->posx_save, win->posy_save);
-	if (win == ((t_data *)(win->data))->mandel)
-		mandel_update_all(win);
-	if (win == ((t_data *)(win->data))->newton)
-		newton_update_all(win);
+	update_window(win);
 	return (1);
 }
 
-static int				mouse_wheel_hooks(int button, int x, int y, t_win *win)
+static int	mouse_wheel_hooks(int button, int x, int y, t_win *win)
 {
 	x = 0;
 	y = 0;
-	if (win)
-		printf("button : %d\n", button);
 	if (button == MOUSEWHEEL_UP || button == MOUSEWHEEL_DOWN)
 	{
 		zoom(win, button == MOUSEWHEEL_DOWN ? 1.1 : 0.9,
 				x_to_real(win, win->mouse_x),
 				y_to_imaginary(win, win->mouse_y));
-	if (win == ((t_data *)(win->data))->julia)
-		julia_update_all(win, win->posx_save, win->posy_save);
-	if (win == ((t_data *)(win->data))->mandel)
-		mandel_update_all(win);
-	if (win == ((t_data *)(win->data))->newton)
-		newton_update_all(win);
+		update_window(win);
 	}
 	return (1);
 }
 
-//static int				mouse_click_drag(int x, int y, t_win *w)
-//{
-//	printf("mouse real = %g imaginary = %g\n", x_to_real(w, x), y_to_imaginary(w, y));
-//	//data->posx_save = x_to_real(data, data->mouse_x);
-//	//data->posy_save = y_to_imaginary(data, data->mouse_y);
-//	return (1);
-//}
-
-static int				mouse_movement(int x, int y, t_win *w)
+static int	mouse_movement(int x, int y, t_win *w)
 {
 	w->mouse_x = x;
 	w->mouse_y = y;
-	//printf("mouse real = %g imaginary = %g\n", x_to_real(w, w->mouse_x), y_to_imaginary(w, w->mouse_y));
 	if ((w == ((t_data *)(w->data))->julia) && w->mouse_on)
-		julia_update_all(w, x_to_real(w, w->mouse_x), y_to_imaginary(w, w->mouse_y));
+		julia_update_all(w, x_to_real(w, w->mouse_x),
+							y_to_imaginary(w, w->mouse_y));
 	return (1);
 }
 
-int				all_hooks(t_data *data)
+static void	all_hooks_for_window(t_win *win)
 {
-	t_data 	*d;
-	t_win	*w;
+	if (win)
+	{
+		mlx_key_hook(win->win_ptr, &key_hooks, win);
+		mlx_mouse_hook(win->win_ptr, &mouse_wheel_hooks, win);
+		mlx_hook(win->win_ptr, MotionNotify,
+					PointerMotionMask, &mouse_movement, win);
+	}
+}
+
+int			all_hooks(t_data *data)
+{
+	t_data	*d;
 
 	d = (t_data *)data;
-	if ((w = d->julia))
-	{
-		mlx_key_hook(w->win_ptr, &key_hooks, w);
-		mlx_hook(w->win_ptr, MotionNotify, PointerMotionMask, &mouse_movement, w);
-		mlx_mouse_hook(w->win_ptr, &mouse_wheel_hooks, w);
-//		mlx_hook(w->win_ptr, MotionNotify, (1L<<13), &mouse_click_drag, w);
-	}
-	if ((w = d->mandel))
-	{
-		mlx_key_hook(w->win_ptr, &key_hooks, w);
-		mlx_hook(w->win_ptr, MotionNotify, PointerMotionMask, &mouse_movement, w);
-		mlx_mouse_hook(w->win_ptr, &mouse_wheel_hooks, w);
-//		mlx_hook(w->win_ptr, MotionNotify, (1L<<13), &mouse_click_drag, w);
-	}
-	if ((w = d->newton))
-	{
-		mlx_key_hook(w->win_ptr, &key_hooks, w);
-		mlx_hook(w->win_ptr, MotionNotify, PointerMotionMask, &mouse_movement, w);
-		mlx_mouse_hook(w->win_ptr, &mouse_wheel_hooks, w);
-//		mlx_hook(w->win_ptr, MotionNotify, (1L<<13), &mouse_click_drag, w);
-	}
+	all_hooks_for_window(d->julia);
+	all_hooks_for_window(d->mandel);
+	all_hooks_for_window(d->newton);
 	return (1);
 }

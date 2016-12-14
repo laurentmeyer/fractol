@@ -6,13 +6,11 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 13:32:41 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 15:02:20 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/14 16:58:26 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-#include <stdio.h>
 
 long	fractal_masks(int ac, char **av)
 {
@@ -31,7 +29,6 @@ long	fractal_masks(int ac, char **av)
 			m |= NEWTON_MASK;
 		++i;
 	}
-	printf("mask = %ld\n", m);
 	return (m);
 }
 

@@ -9,7 +9,6 @@ SRCFILES =	main.c					\
 			init.c					\
 			hooks.c					\
 			display.c				\
-			print.c					\
 			complex.c				\
 			julia.c					\
 			newton.c				\
@@ -54,6 +53,6 @@ clean:
 
 fclean: clean
 	$(MAKE) -C $(LIBFT) fclean
-	rm -f $(NAME)
+	rm -f $(BINARY)
 
 re: fclean all

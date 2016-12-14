@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 11:54:08 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/13 17:17:03 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/14 16:54:13 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <stdio.h>
-
-static t_win			*init_win(t_data *data, char *title)
+static t_win	*init_win(t_data *data, char *title)
 {
 	t_win	*win;
 
@@ -30,6 +28,7 @@ static t_win			*init_win(t_data *data, char *title)
 						&(win->bits_per_pixel),
 						&(win->size_line), &(win->endian))))
 			return (NULL);
+		win->destroyed = 0;
 		win->data = data;
 		win->mlx_ptr = data->ptr;
 		win->win_hmin = -2;

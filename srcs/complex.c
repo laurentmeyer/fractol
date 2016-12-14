@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 15:54:18 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/12 13:43:53 by lmeyer           ###   ########.fr       */
+/*   Updated: 2016/12/14 16:42:33 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@ t_fcomplex		*fcomplex_new(double real, double imaginary)
 	return ((t_fcomplex *)new);
 }
 
-void			fcomplex_multiply_to(t_fcomplex *at, t_fcomplex *c)
-{
-	double	tmpr0;
-	double	tmpr1;
-	double	tmpi0;
-	double	tmpi1;
-
-	tmpr0 = (*at)[0];
-	tmpr1 = (*c)[0];
-	tmpi0 = (*at)[1];
-	tmpi1 = (*c)[1];
-	(*at)[0] = tmpr0 * tmpr1 - tmpi0 * tmpi1;
-	(*at)[1] = tmpr0 * tmpi1 + tmpr1 * tmpi0;
-}
-
 void			fcomplex_multiply_to_f(t_fcomplex *at, double r, double i)
 {
 	double	tmpr0;
@@ -51,21 +36,6 @@ void			fcomplex_multiply_to_f(t_fcomplex *at, double r, double i)
 	(*at)[1] = tmpr0 * i + r * tmpi0;
 }
 
-void			fcomplex_add_to(t_fcomplex *at, t_fcomplex *c)
-{
-	double	tmpr0;
-	double	tmpr1;
-	double	tmpi0;
-	double	tmpi1;
-
-	tmpr0 = (*at)[0];
-	tmpr1 = (*c)[0];
-	tmpi0 = (*at)[1];
-	tmpi1 = (*c)[1];
-	(*at)[0] = tmpr0 + tmpr1;
-	(*at)[1] = tmpi0 + tmpi1;
-}
-
 void			fcomplex_add_to_f(t_fcomplex *at, double r, double i)
 {
 	double	tmpr0;
@@ -75,11 +45,6 @@ void			fcomplex_add_to_f(t_fcomplex *at, double r, double i)
 	tmpi0 = (*at)[1];
 	(*at)[0] = tmpr0 + r;
 	(*at)[1] = tmpi0 + i;
-}
-
-void			fcomplex_divide_to(t_fcomplex *at, t_fcomplex *c)
-{
-	fcomplex_divide_to_f(at, (*c)[0], (*c)[1]);
 }
 
 void			fcomplex_divide_to_f(t_fcomplex *at, double r, double i)
