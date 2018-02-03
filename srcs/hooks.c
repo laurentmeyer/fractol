@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 #include <stdlib.h>
-#include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
+// #include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
 #define ESC_KEY 0x35
 #define LEFT_KEY 0x7B
 #define RIGHT_KEY 0x7C
@@ -31,6 +31,8 @@
 #define PAGEDOWN_KEY 0x79
 #define MOUSEWHEEL_UP 5
 #define MOUSEWHEEL_DOWN 4
+#define MOTIONNOTIFY 6
+#define POINTERMOTIONMASK (1L<<6)
 
 static int	key_hooks(int keycode, t_win *win)
 {
@@ -88,8 +90,8 @@ static void	all_hooks_for_window(t_win *win)
 	{
 		mlx_key_hook(win->win_ptr, &key_hooks, win);
 		mlx_mouse_hook(win->win_ptr, &mouse_wheel_hooks, win);
-		mlx_hook(win->win_ptr, MotionNotify,
-					PointerMotionMask, &mouse_movement, win);
+		mlx_hook(win->win_ptr, MOTIONNOTIFY,
+					POINTERMOTIONMASK, &mouse_movement, win);
 	}
 }
 
