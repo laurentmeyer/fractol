@@ -23,7 +23,7 @@ void	pixel_put(t_win *win, int x, int y, int color)
 void	update_window(t_win *win)
 {
 	if (win == ((t_data *)(win->data))->julia)
-		julia_update_all(win, win->posx_save, win->posy_save);
+		julia_update_all(win, (t_c){win->posx_save, win->posy_save});
 	if (win == ((t_data *)(win->data))->mandel)
 		mandel_update_all(win);
 	if (win == ((t_data *)(win->data))->newton)

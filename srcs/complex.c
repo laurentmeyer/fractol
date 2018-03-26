@@ -10,46 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mycomplex.h"
-#include <stdlib.h>
-#include <math.h>
+#include "complex.h"
 
-t_fcomplex		*fcomplex_new(double real, double imaginary)
+t_c		c_mul(t_c a, t_c b)
 {
-	double	*new;
+	t_c		ret;
 
-	if (!(new = (double *)malloc(2 * sizeof(double))))
-		return (0);
-	new[0] = real;
-	new[1] = imaginary;
-	return ((t_fcomplex *)new);
+	ret.r = a.r * b.r - a.i * b.i;
+	ret.i = a.r * b.i + a.i * b.r;
+	return (ret);
 }
 
-void			fcomplex_multiply_to_f(t_fcomplex *at, double r, double i)
+t_c		c_add(t_c a, t_c b)
 {
-	double	tmpr0;
-	double	tmpi0;
+	t_c		ret;
 
-	tmpr0 = (*at)[0];
-	tmpi0 = (*at)[1];
-	(*at)[0] = tmpr0 * r - tmpi0 * i;
-	(*at)[1] = tmpr0 * i + r * tmpi0;
+	ret.r = a.r + b.r;
+	ret.i = a.i + b.i;
+	return (ret);
 }
 
-void			fcomplex_add_to_f(t_fcomplex *at, double r, double i)
+t_c		c_div(t_c num, t_c den)
 {
-	double	tmpr0;
-	double	tmpi0;
+	double	norm;
 
-	tmpr0 = (*at)[0];
-	tmpi0 = (*at)[1];
-	(*at)[0] = tmpr0 + r;
-	(*at)[1] = tmpi0 + i;
-}
-
-void			fcomplex_divide_to_f(t_fcomplex *at, double r, double i)
-{
-	fcomplex_multiply_to_f(at, r, -i);
-	(*at)[0] /= r * r + i * i;
-	(*at)[1] /= r * r + i * i;
+	num = c_mul(num, (t_c){den.r, -den.i});
+	norm = den.r * den.r + den.i * den.i;
+	num.r /= norm;
+	num.i /= norm;
+	return (num);
 }

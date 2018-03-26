@@ -1,5 +1,5 @@
 CC = 		gcc
-CFLAGS =	-g -Wall -Wextra -Werror
+CFLAGS =	-Wall -Wextra -Werror
 BINARY =	fractol
 BUILDDIR =	builds
 SOURCEDIR =	srcs

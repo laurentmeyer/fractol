@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include "mycomplex.h"
+#include "complex.h"
 #include <stdlib.h>
 #define MAX_ITER 80
 #define MAX_MODULUS 4
@@ -42,47 +42,37 @@ static int		mandelbrot_colors(int iter)
 	return (0);
 }
 
-static int		mandelbrot_divergence(double zx, double zy,
-										double cx, double cy)
+static int		mandelbrot_divergence(t_c z, t_c c)
 {
-	double		init[2];
-	double		copy[2];
-	t_fcomplex	*z;
 	int			i;
 
-	init[0] = zx;
-	init[1] = zy;
-	z = (t_fcomplex *)(&init);
 	i = 0;
-	while ((*z)[0] * (*z)[0] + (*z)[1] * (*z)[1] < MAX_MODULUS
+	while (z.r * z.r + z.i * z.i < MAX_MODULUS
 			&& ++i < MAX_ITER)
 	{
-		copy[0] = (*z)[0];
-		copy[1] = (*z)[1];
-		fcomplex_multiply_to_f(z, copy[0], copy[1]);
-		fcomplex_add_to_f(z, cx, cy);
+		z = c_mul(z, z);
+		z = c_add(z, c);
 	}
 	return (mandelbrot_colors(i));
 }
 
-void			julia_update_all(t_win *win, double cx, double cy)
+void			julia_update_all(t_win *win, t_c c)
 {
-	int			zx;
-	int			zy;
-	int			col;
+	int			x;
+	int			y;
+	t_c			z;
 
-	zy = 0;
-	while (zy < WIN_H)
+	y = 0;
+	while (y < WIN_H)
 	{
-		zx = 0;
-		while (zx < WIN_W)
+		x = 0;
+		while (x < WIN_W)
 		{
-			col = mandelbrot_divergence(
-					x_to_real(win, zx), y_to_imaginary(win, zy), cx, cy);
-			pixel_put(win, zx, zy, col);
-			++zx;
+			z = (t_c){x_to_real(win, x), y_to_imaginary(win, y)};
+			pixel_put(win, x, y, mandelbrot_divergence(z, c));
+			++x;
 		}
-		++zy;
+		++y;
 	}
 	if (!mlx_put_image_to_window(win->mlx_ptr,
 				win->win_ptr, win->img_ptr, 0, 0))
@@ -91,24 +81,25 @@ void			julia_update_all(t_win *win, double cx, double cy)
 
 void			mandel_update_all(t_win *win)
 {
-	int			cx;
-	int			cy;
-	int			col;
+	int			x;
+	int			y;
+	t_c			c;
+	t_c			z;
 
-	cy = 0;
-	while (cy < WIN_H)
+	z = (t_c){0, 0};
+	y = 0;
+	while (y < WIN_H)
 	{
-		cx = 0;
-		while (cx < WIN_W)
+		x = 0;
+		while (x < WIN_W)
 		{
-			col = mandelbrot_divergence(
-					0, 0, x_to_real(win, cx), y_to_imaginary(win, cy));
-			pixel_put(win, cx, cy, col);
-			++cx;
+			c = (t_c){x_to_real(win, x), y_to_imaginary(win, y)};
+			pixel_put(win, x, y, mandelbrot_divergence(z, c));
+			++x;
 		}
-		++cy;
+		++y;
 	}
 	if (!mlx_put_image_to_window(win->mlx_ptr,
-				win->win_ptr, win->img_ptr, 0, 0))
+								 win->win_ptr, win->img_ptr, 0, 0))
 		exit(0);
 }

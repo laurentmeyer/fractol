@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include "mycomplex.h"
+#include "complex.h"
 #include "mlx.h"
 #include <stdlib.h>
 #include <math.h>
@@ -61,7 +61,7 @@ t_data			*init_data(long masks)
 		return (NULL);
 	if (data->julia)
 		julia_update_all(data->julia,
-				data->julia->mouse_x, data->julia->mouse_y);
+				(t_c){data->julia->mouse_x, data->julia->mouse_y});
 	if (data->mandel)
 		mandel_update_all(data->mandel);
 	if (data->newton)

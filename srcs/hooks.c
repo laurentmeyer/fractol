@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include "complex.h"
 #include <stdlib.h>
 // #include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
 #define ESC_KEY 0x35
@@ -76,11 +77,15 @@ static int	mouse_wheel_hooks(int button, int x, int y, t_win *win)
 
 static int	mouse_movement(int x, int y, t_win *w)
 {
+	t_c pos;
+
 	w->mouse_x = x;
 	w->mouse_y = y;
 	if ((w == ((t_data *)(w->data))->julia) && w->mouse_on)
-		julia_update_all(w, x_to_real(w, w->mouse_x),
-							y_to_imaginary(w, w->mouse_y));
+	{
+		pos = (t_c){x_to_real(w, w->mouse_x), y_to_imaginary(w, w->mouse_y)};
+		julia_update_all(w, pos);
+	}
 	return (1);
 }
 

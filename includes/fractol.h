@@ -14,7 +14,7 @@
 # define FRACTOL_H
 # include "mlx.h"
 # include "libft.h"
-# include "mycomplex.h"
+# include "complex.h"
 # define WIN_W 500
 # define WIN_H 500
 # define JULIA_MASK (1L << 0)
@@ -55,7 +55,7 @@ t_data				*init_data(long masks);
 double				x_to_real(t_win *win, int x);
 double				y_to_imaginary(t_win *win, int y);
 void				pixel_put(t_win *win, int x, int y, int color);
-void				julia_update_all(t_win *win, double cx, double cy);
+void				julia_update_all(t_win *win, t_c c);
 void				mandel_update_all(t_win *win);
 void				newton_update_all(t_win *win);
 int					all_hooks(t_data *data);

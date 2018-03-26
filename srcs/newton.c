@@ -11,77 +11,74 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include "mycomplex.h"
+#include "complex.h"
 #include <stdlib.h>
-#define MAX_ITER 80
-#define MAX_MODULUS 4
-#define COLOR_FACTOR 3
-#define ROOT_DIFF 0.000001
 
-static int		newton_root(double a, double b)
+enum			e_newton_states
 {
-	double	cube[2];
-	double	sqrmod;
+	NEWTON_CONTINUE,
+	NEWTON_RED,
+	NEWTON_GREEN,
+	NEWTON_BLUE
+};
 
-	cube[0] = a * a * a - 3 * a * b * b;
-	cube[1] = 3 * a * a * b - b * b * b;
-	sqrmod = cube[0] * cube[0] + cube[1] * cube[1];
-	if (!(sqrmod - 1 < ROOT_DIFF && sqrmod - 1 > -ROOT_DIFF))
-		return (0);
-	if (a > 0.9)
-		return (1);
-	if (b > 0.8)
-		return (2);
-	return (3);
+static int		newton_root(t_c z)
+{
+	t_c				cube;
+	double			sqrmod;
+	const double	root_diff = 0.000001;
+
+	cube = c_mul(z, z);
+	cube = c_mul(cube, z);
+	sqrmod = cube.r * cube.r + cube.i * cube.i;
+	if (!(sqrmod - 1 < root_diff && sqrmod - 1 > -root_diff))
+		return (NEWTON_CONTINUE);
+	if (z.r > 0.9)
+		return (NEWTON_RED);
+	if (z.i > 0.8)
+		return (NEWTON_GREEN);
+	return (NEWTON_BLUE);
 }
 
-static int		newton_divergence(double zx, double zy)
+static int		newton_divergence(t_c z)
 {
-	double		init[2];
-	double		copy[2];
-	t_fcomplex	*z;
+	t_c			copy;	
 	int			i;
 	int			root;
 
-	init[0] = zx;
-	init[1] = zy;
-	z = (t_fcomplex *)(&init);
 	i = 0;
-	if (zx == 0 && zy == 0)
+	if (0 == z.r && 0 == z.i)
 		return (0);
-	while (!(root = newton_root(init[0], init[1])) && ++i <= 50)
+	while (NEWTON_CONTINUE == (root = newton_root(z)) && ++i <= 50)
 	{
-		copy[0] = init[0];
-		copy[1] = init[1];
-		fcomplex_multiply_to_f(z, copy[0], copy[1]);
-		fcomplex_multiply_to_f(z, copy[0], copy[1]);
-		fcomplex_multiply_to_f(z, 2, 0);
-		init[0] += 1;
-		fcomplex_divide_to_f(z, copy[0], copy[1]);
-		fcomplex_divide_to_f(z, 3 * copy[0], 3 * copy[1]);
+		copy = z;
+		z = c_mul(z, copy);
+		z = c_mul(z, copy);
+		z = c_mul(z, (t_c){2, 0});
+		z = c_add(z, (t_c){1, 0});
+		z = c_div(z, copy);
+		z = c_div(z, c_mul(copy, (t_c){3, 0}));
 	}
 	return (((5 * i) << (8 * (root - 1))));
 }
 
 void			newton_update_all(t_win *win)
 {
-	int			zx;
-	int			zy;
-	int			col;
+	int			x;
+	int			y;
+	t_c			z;
 
-	zy = 0;
-	while (zy < WIN_H)
+	y = 0;
+	while (y < WIN_H)
 	{
-		zx = 0;
-		while (zx < WIN_W)
+		x = 0;
+		while (x < WIN_W)
 		{
-			col = newton_divergence(
-					x_to_real(win, zx),
-					y_to_imaginary(win, zy));
-			pixel_put(win, zx, zy, col);
-			++zx;
+			z = (t_c){x_to_real(win, x), y_to_imaginary(win, y)};
+			pixel_put(win, x, y, newton_divergence(z));
+			++x;
 		}
-		++zy;
+		++y;
 	}
 	if (!mlx_put_image_to_window(win->mlx_ptr,
 				win->win_ptr, win->img_ptr, 0, 0))

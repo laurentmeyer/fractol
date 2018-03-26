@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mycomplex.h                                        :+:      :+:    :+:   */
+/*     complex.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,14 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MYCOMPLEX_H
-# define MYCOMPLEX_H
+#ifndef COMPLEX_H
+# define COMPLEX_H
 
-typedef double	t_fcomplex[2];
+typedef	struct	s_c
+{
+	double		r;
+	double		i;
+}				t_c;
 
-t_fcomplex		*fcomplex_new(double real, double imaginary);
-void			fcomplex_multiply_to_f(t_fcomplex *at, double r, double i);
-void			fcomplex_add_to_f(t_fcomplex *at, double r, double i);
-void			fcomplex_divide_to_f(t_fcomplex *at, double r, double i);
+
+t_c				c_mul(t_c a, t_c b);
+t_c				c_add(t_c a, t_c b);
+t_c				c_div(t_c num, t_c den);
 
 #endif
