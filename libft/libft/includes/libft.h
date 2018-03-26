@@ -6,7 +6,7 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 15:47:56 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/12/03 17:46:31 by lmeyer           ###   ########.fr       */
+/*   Updated: 2017/10/12 15:59:11 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
+# include <wchar.h>
 # define MININT -2147483648
 # define MININTSIZE 11
 # define MININTSTR "-2147483648"
@@ -24,6 +25,9 @@ typedef	struct			s_list
 	size_t				content_size;
 	struct s_list		*next;
 }						t_list;
+
+typedef int				(t_listcmp)(t_list *l1, t_list *l2);
+typedef void			(t_listdisplay)(t_list *l);
 
 void					*ft_memset(void *b, int c, size_t len);
 void					ft_bzero(void *s, size_t n);
@@ -91,5 +95,24 @@ t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int						ft_countwords(char const *s, char c);
 int						ft_atoi_hex(char *s);
 int						ft_is_hex_str(char *s);
+char					*ft_strndup(const char *s1, size_t n);
+char					*ft_insert_str(char *dst, char *start,
+										char *end, char *src);
+char					*ft_strrev(char *s);
+char					*ft_itoa_base(int value, int base);
+void					ft_strtolower(char *s);
+char					*ft_strlast(char *s);
+char					*ft_wcrtoutf(wchar_t w);
+int						ft_valid_int_str(char *s);
+int						gnlite(const int fd, char **line);
+int						ft_getopt(int argc, char **argv,
+										const char *optstring);
+t_list					*ft_lstpop(t_list **elem);
+size_t					ft_lstlen(t_list *start);
+void					ft_lstsort(t_list **alst, t_listcmp *f);
+void					ft_lstappend(t_list **alst, t_list *to_append);
+void					ft_lstrev(t_list **alst);
+char					*ft_basename(char *path);
+int						ft_intlen(int n);
 
 #endif

@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_strtolower.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 15:39:45 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/11/04 15:39:47 by lmeyer           ###   ########.fr       */
+/*   Created: 2016/12/22 14:42:01 by lmeyer            #+#    #+#             */
+/*   Updated: 2016/12/22 14:48:56 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
-#include <string.h>
 
-void	ft_lstdelone(t_list **alst, void (*del)(void *, size_t))
+void		ft_strtolower(char *s)
 {
-	(*del)((*alst)->content, (*alst)->content_size);
-	free(*alst);
-	*alst = NULL;
+	if (!*s)
+		return ;
+	*s = ft_tolower(*s);
+	ft_strtolower(s + 1);
 }

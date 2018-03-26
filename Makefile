@@ -1,7 +1,7 @@
 CC = 		gcc
-CFLAGS =	-Wall -Wextra -Werror
+CFLAGS =	-g -Wall -Wextra -Werror
 BINARY =	fractol
-BUILDDIR =	srcs
+BUILDDIR =	builds
 SOURCEDIR =	srcs
 HEADERDIR = includes
 
@@ -23,7 +23,7 @@ LIBFT = 		./libft/
 MINILIB = 		./mlx/
 
 CCHEADERS = -I./$(HEADERDIR)		\
-			-I$(LIBFT)includes/		\
+			-I$(LIBFT)libft/includes/		\
 			-I$(MINILIB)
 
 CCLIBS = -L$(LIBFT) -lft			\
@@ -44,12 +44,14 @@ $(BINARY) : $(OBJECTS)
 	$(CC) $(CCHEADERS) $(CCLIBS) $(OBJECTS) $(CCFRAMEWORKS) -o $(BINARY)
 
 $(BUILDDIR)/%.o : $(SOURCEDIR)/%.c
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(CCHEADERS) -c $< -o $@
 
 clean:
 	$(MAKE) -C $(LIBFT) clean
 	$(MAKE) -C $(MINILIB) clean
 	rm -f $(OBJECTS)
+	rm -rf $(BUILDDIR)
 
 fclean: clean
 	$(MAKE) -C $(LIBFT) fclean

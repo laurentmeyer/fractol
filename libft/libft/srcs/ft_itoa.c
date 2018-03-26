@@ -6,23 +6,11 @@
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 15:40:09 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/11/04 16:12:27 by lmeyer           ###   ########.fr       */
+/*   Updated: 2017/10/12 15:57:54 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static	int	ft_intlen(int n)
-{
-	if (n == MININT)
-		return (MININTSIZE);
-	else if (n < 0)
-		return (1 + ft_intlen(-n));
-	else if (n < 10)
-		return (1);
-	else
-		return (1 + ft_intlen(n / 10));
-}
 
 char		*ft_itoa(int n)
 {

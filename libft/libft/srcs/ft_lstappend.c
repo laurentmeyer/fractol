@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_lstappend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmeyer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 15:38:05 by lmeyer            #+#    #+#             */
-/*   Updated: 2016/11/04 15:43:51 by lmeyer           ###   ########.fr       */
+/*   Created: 2017/10/14 11:39:32 by lmeyer            #+#    #+#             */
+/*   Updated: 2017/10/14 11:39:33 by lmeyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <string.h>
 
-char	*ft_strchr(const char *s, int c)
+void	ft_lstappend(t_list **alst, t_list *to_append)
 {
-	if (*s == (char)c)
-		return ((char *)s);
-	else if (*s == '\0')
-		return (NULL);
-	else
-		return (ft_strchr(s + 1, c));
+	t_list	*cur;
+
+	if (!*alst)
+	{
+		*alst = to_append;
+		return ;
+	}
+	cur = *alst;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = to_append;
 }
